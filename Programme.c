@@ -2,10 +2,10 @@
 #include<conio.h>
 int main()
 {
-int bt[10],Process_no[10],wt[10],tat[10];
-int at[10],priority[10],i,j,Number_of_Process,tot=0,flag,temp;
+int i,j,Number_of_Process,tot=0,flag,temp;
 printf("Enter Number of Process:");
 scanf("%d",&Number_of_Process);
+int at[Number_of_Process],priority[Number_of_Process],bt[Number_of_Process],Process_no[Number_of_Process],wt[Number_of_Process],tat[Number_of_Process];
 printf("\nEnter Arrival Time, Burst Time and priority\n");
 for(i=0;i<Number_of_Process;i++)
 {
@@ -35,6 +35,9 @@ for(i=0;i<Number_of_Process;i++)
     temp=Process_no[i];
     Process_no[i]=Process_no[flag];
     Process_no[flag]=temp;
+    temp=at[i];
+    at[i]=at[flag];
+    at[flag]=temp;
 }
 wt[0]=0;
 for(i=1;i<Number_of_Process;i++)
@@ -49,7 +52,10 @@ for(i=1;i<Number_of_Process;i++)
 printf("\n\nProcess\t  Burst Time\t  Waiting Time\t  Turn Around Time");
 for(i=0;i<Number_of_Process;i++)
 {
+    if(priority[i]==0||priority[i]==1)
     tat[i]=bt[i]+wt[i];
+    else
+        tat[i]=bt[i]+wt[i]-at[i];
     printf("\nP%d \t\t %d\t \t   %d\t\t%d",Process_no[i],bt[i],wt[i],tat[i]);
 }
 getch();
