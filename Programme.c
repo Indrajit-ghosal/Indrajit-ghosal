@@ -1,74 +1,57 @@
 #include<stdio.h>
 #include<conio.h>
-#include<string.h>
-void main()
+int main()
 {
-    int burst_time[20],arrival_time[10],n,i,j,temp,priority[10],st[10],ft[10],wt[10],ta[10];
-    int totwt=0,totta=0;
-    float awt,ata;
-    char process_name[10][10],t[10];
-    printf("Enter the number of process:");
-    scanf("%d",&n);
-    for(i=0; i<n; i++)
+int bt[10],Process_no[10],wt[10],tat[10];
+int at[10],priority[10],i,j,Number_of_Process,tot=0,flag,temp;
+printf("Enter Number of Process:");
+scanf("%d",&Number_of_Process);
+printf("\nEnter Arrival Time, Burst Time and priority\n");
+for(i=0;i<Number_of_Process;i++)
+{
+    printf("\nP[%d]\n",(i+1));
+    printf("Enter Arrival Time:");
+    scanf("%d",&at[i]);
+    printf("Enter Burst Time:");
+    scanf("%d",&bt[i]);
+    printf("Enter priority:");
+    scanf("%d",&priority[i]);
+    Process_no[i]=i+1;
+}
+for(i=0;i<Number_of_Process;i++)
+{
+    flag=i;
+    for(j=i+1;j<Number_of_Process;j++)
     {
-        printf("\nEnter Process Name : ");
-        scanf("%s",process_name[i]);
-        printf("Enter Arrival Time : ");
-        scanf("%d",&arrival_time[i]);
-        printf("Enter Burst Time : ");
-        scanf("%d",&burst_time[i]);
-        printf("Enter Priority : ");
-        scanf("%d",&priority[i]);
-
-
+        if(priority[j]<priority[flag])
+        flag=j;
     }
-    for(i=0; i<n; i++)
-        for(j=0; j<n; j++)
-        {
-            if(priority[i]<priority[j])
-            {
-                temp=priority[i];
-                priority[i]=priority[j];
-                priority[j]=temp;
-                temp=arrival_time[i];
-                arrival_time[i]=arrival_time[j];
-                arrival_time[j]=temp;
-                temp=burst_time[i];
-                burst_time[i]=burst_time[j];
-                burst_time[j]=temp;
-                strcpy(t,process_name[i]);
-                strcpy(process_name[i],process_name[j]);
-                strcpy(process_name[j],t);
-            }
-        }
-    for(i=0; i<n; i++)
-
+    temp=priority[i];
+    priority[i]=priority[flag];
+    priority[flag]=temp;
+    temp=bt[i];
+    bt[i]=bt[flag];
+    bt[flag]=temp;
+    temp=Process_no[i];
+    Process_no[i]=Process_no[flag];
+    Process_no[flag]=temp;
+}
+wt[0]=0;
+for(i=1;i<Number_of_Process;i++)
+{
+    wt[i]=0;
+    for(j=0;j<i;j++)
     {
-
-        if(i==0)
-        {
-            st[i]=arrival_time[i];
-            wt[i]=st[i]-arrival_time[i];
-            ft[i]=st[i]+burst_time[i];
-            ta[i]=ft[i]-arrival_time[i];
-        }
-        else
-        {
-            st[i]=ft[i-1];
-            wt[i]=st[i]-arrival_time[i];
-            ft[i]=st[i]+burst_time[i];
-            ta[i]=ft[i]-arrival_time[i];
-        }
-        totwt+=wt[i];
-        totta+=ta[i];
+    wt[i]+=bt[j];
     }
-    awt=(float)totwt/n;
-    ata=(float)totta/n;
-    printf("\nProcess Name\tArrival Time\tBurst Time\tPriority\tWaiting Time\tTurnaround time");
-    for(i=0; i<n; i++)
-        printf("\n\t%s\t%5d\t\t%5d\t\t%5d\t\t%5d\t\t%5d",process_name[i],arrival_time[i],burst_time[i],priority[i],wt[i],ta[i]);
-    printf("\nAverage Waiting Time is : %.2f",awt);
-    printf("\nAverage Turnaround Time is : %.2f",ata);
-    getch();
-    return 0;
+    tot+=wt[i];
+}
+printf("\n\nProcess\t  Burst Time\t  Waiting Time\t  Turn Around Time");
+for(i=0;i<Number_of_Process;i++)
+{
+    tat[i]=bt[i]+wt[i];
+    printf("\nP%d \t\t %d\t \t   %d\t\t%d",Process_no[i],bt[i],wt[i],tat[i]);
+}
+getch();
+return 0;
 }
